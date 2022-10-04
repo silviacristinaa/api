@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +26,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserResource {
 	
+	private static final String ID = "/{id}";
 	private final ModelMapper modelMapper;
 	private final UserService userService; 
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = ID)
 	public ResponseEntity<UserDto> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(modelMapper.map(userService.findById(id), UserDto.class));
 	}
@@ -41,7 +44,19 @@ public class UserResource {
 	@PostMapping
 	public ResponseEntity<UserDto> create(@RequestBody UserDto obj) {
 		URI uri = ServletUriComponentsBuilder
-				.fromCurrentRequest().path("/{id}").buildAndExpand(userService.create(obj).getId()).toUri();
+				.fromCurrentRequest().path(ID).buildAndExpand(userService.create(obj).getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@PutMapping(value = ID)
+	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto obj) {
+		obj.setId(id);
+		return ResponseEntity.ok().body(modelMapper.map(userService.update(obj), UserDto.class));
+	}
+	
+	@DeleteMapping(value = ID)
+	public ResponseEntity<UserDto> delete(@PathVariable Long id) {
+		userService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
