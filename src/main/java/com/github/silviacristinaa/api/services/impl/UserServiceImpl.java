@@ -10,6 +10,7 @@ import com.github.silviacristinaa.api.domain.User;
 import com.github.silviacristinaa.api.domain.dtos.UserDto;
 import com.github.silviacristinaa.api.repositories.UserRepository;
 import com.github.silviacristinaa.api.services.UserService;
+import com.github.silviacristinaa.api.services.exceptions.DataIntegratyViolationException;
 import com.github.silviacristinaa.api.services.exceptions.ObjectNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,15 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User create(UserDto obj) {
+		findByEmail(obj);
 		return userRepository.save(modelMapper.map(obj, User.class));
+	}
+
+	@Override
+	public void findByEmail(UserDto obj) {
+		Optional<User> user = userRepository.findByEmail(obj.getEmail());
+		if(user.isPresent()) {
+			throw new DataIntegratyViolationException("E-mail já cadastrado no sistema");
+		}
 	}
 }

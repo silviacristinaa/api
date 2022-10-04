@@ -10,4 +10,5 @@ public interface UserService {
 	User findById(Long id);
 	List<User> findAll();
 	User create(UserDto obj);
+	public void findByEmail(UserDto obj);
 }
