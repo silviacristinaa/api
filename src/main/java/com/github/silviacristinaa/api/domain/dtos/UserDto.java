@@ -3,8 +3,8 @@ package com.github.silviacristinaa.api.domain.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter @Getter
