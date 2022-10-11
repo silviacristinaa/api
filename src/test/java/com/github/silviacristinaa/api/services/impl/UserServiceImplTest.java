@@ -13,11 +13,12 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.github.silviacristinaa.api.domain.User;
 import com.github.silviacristinaa.api.domain.dtos.UserDto;
@@ -25,14 +26,14 @@ import com.github.silviacristinaa.api.repositories.UserRepository;
 import com.github.silviacristinaa.api.services.exceptions.DataIntegratyViolationException;
 import com.github.silviacristinaa.api.services.exceptions.ObjectNotFoundException;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class UserServiceImplTest {
 	
 	private static final Long   ID       = 1L;
 	private static final String NAME     = "Silvia";
 	private static final String EMAIL    = "silvia@mail.com";
 	private static final String PASSWORD = "123";
-	private static final int INDEX = 0;
+	private static final Integer INDEX   = 0;
 	
 	@InjectMocks
 	private UserServiceImpl userServiceImpl;
