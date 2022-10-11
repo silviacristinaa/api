@@ -19,11 +19,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.silviacristinaa.api.domain.dtos.UserDto;
 import com.github.silviacristinaa.api.services.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(value = "/users")
 @RequiredArgsConstructor
+@Api(value="API REST Usuários")
 public class UserResource {
 	
 	private static final String ID = "/{id}";
@@ -31,17 +34,20 @@ public class UserResource {
 	private final UserService userService; 
 	
 	@GetMapping(value = ID)
+	@ApiOperation(value="Retorna um usuário único")
 	public ResponseEntity<UserDto> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(modelMapper.map(userService.findById(id), UserDto.class));
 	}
 	
 	@GetMapping
+	@ApiOperation(value="Retorna uma lista de usuários")
 	public ResponseEntity<List<UserDto>> findAll() {
 		return ResponseEntity.ok().body(userService.findAll()
 				.stream().map(x -> modelMapper.map(x, UserDto.class)).collect(Collectors.toList()));
 	}
 	
 	@PostMapping
+	@ApiOperation(value="Cria um usuário")
 	public ResponseEntity<UserDto> create(@RequestBody UserDto obj) {
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest().path(ID).buildAndExpand(userService.create(obj).getId()).toUri();
@@ -49,12 +55,14 @@ public class UserResource {
 	}
 	
 	@PutMapping(value = ID)
+	@ApiOperation(value="Atualiza um usuário")
 	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto obj) {
 		obj.setId(id);
 		return ResponseEntity.ok().body(modelMapper.map(userService.update(obj), UserDto.class));
 	}
 	
 	@DeleteMapping(value = ID)
+	@ApiOperation(value="Deleta um usuário")
 	public ResponseEntity<UserDto> delete(@PathVariable Long id) {
 		userService.delete(id);
 		return ResponseEntity.noContent().build();
