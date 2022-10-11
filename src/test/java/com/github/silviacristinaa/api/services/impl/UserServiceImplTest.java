@@ -121,6 +121,8 @@ public class UserServiceImplTest {
 	
 	@Test
 	void whenUpdateThenReturnSuccess() {
+		when(userRepository.findById(anyLong())).thenReturn(optionalUser);
+		when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
 		when(userRepository.save(Mockito.any())).thenReturn(user);
 		
 		User response = userServiceImpl.update(userDto);
@@ -134,7 +136,18 @@ public class UserServiceImplTest {
 	}
 	
 	@Test
+	void whenUpdateThenReturnAnObjectNotFoundException() {
+		when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+				
+		ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
+		        () -> userServiceImpl.update(userDto));
+		
+		assertEquals(String.format("Usuário %s não encontrado", ID), exception.getMessage());
+	}
+
+	@Test
 	void whenUpdateThenReturnAnDataIntegrityViolationException() {
+		when(userRepository.findById(anyLong())).thenReturn(optionalUser);
 		when(userRepository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
 		
 		userDto.setId(2L);
