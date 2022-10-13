@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,7 +50,7 @@ public class UserResource {
 	
 	@PostMapping
 	@ApiOperation(value="Cria um usuário")
-	public ResponseEntity<UserDto> create(@RequestBody UserDto obj) {
+	public ResponseEntity<UserDto> create(@RequestBody @Valid UserDto obj) {
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest().path(ID).buildAndExpand(userService.create(obj).getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -56,7 +58,7 @@ public class UserResource {
 	
 	@PutMapping(value = ID)
 	@ApiOperation(value="Atualiza um usuário")
-	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto obj) {
+	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserDto obj) {
 		obj.setId(id);
 		return ResponseEntity.ok().body(modelMapper.map(userService.update(obj), UserDto.class));
 	}
