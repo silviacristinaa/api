@@ -25,7 +25,7 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 			.title("API")
 			.description("API para controle de usuários")
-			.contact(new Contact("Silvia Cristina Alexandre", "https://www.linkedin.com/in/silvia-cristina-alexandre-b7288a146/", 
+			.contact(new Contact("Silvia Cristina Alexandre", "https://www.linkedin.com/in/silvia-cristina-alexandre", 
 						         "silviacristinaalexandre1@gmail.com"))
 			.build();
 	}
